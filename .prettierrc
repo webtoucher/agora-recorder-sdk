@@ -1,0 +1,15 @@
+{
+  "endOfLine": "crlf",
+  "arrowParens": "avoid",
+  "printWidth": 120,
+  "tabWidth": 4,
+  "semi": false,
+  "singleQuote": true,
+  "quoteProps": "as-needed",
+  "bracketSpacing": true,
+  "requirePragma": false,
+  "insertPragma": false,
+  "proseWrap": "preserve",
+  "htmlWhitespaceSensitivity": "css",
+  "trailingComma": "es5"
+}

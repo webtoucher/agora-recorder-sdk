@@ -1,10 +1,13 @@
 {
   "name": "agora-recorder",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Recording library for Agora.io stream service",
   "repository": "https://github.com/webtoucher/agora-recorder",
   "main": "./lib/AgoraRecorder.js",
   "types": "./lib/AgoraRecorder.d.ts",
+  "bin": {
+    "AgoraCoreService": "sdk/bin/AgoraCoreService"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

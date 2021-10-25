@@ -150,14 +150,13 @@ bool AgoraSdk::release() {
   return true;
 }
 
-bool AgoraSdk::createChannel(const string &appid, const string &channelKey, const string &name,
-    uint32_t uid,
+bool AgoraSdk::createChannel(const string &appid, const string &token, const string &name, const string &uid,
     agora::recording::RecordingConfig &config)
 {
     if ((m_engine = agora::recording::IRecordingEngine::createAgoraRecordingEngine(appid.c_str(), this)) == NULL)
         return false;
 
-    if(linuxsdk::ERR_OK != m_engine->joinChannel(channelKey.c_str(), name.c_str(), uid, config))
+    if (linuxsdk::ERR_OK != m_engine->joinChannelWithUserAccount(token.c_str(), name.c_str(), uid.c_str(), config))
         return false;
 
     m_config = config;

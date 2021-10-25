@@ -36,11 +36,9 @@ namespace agora {
             //Wrapper for RtcEngine functions
             NAPI_API(joinChannel);
             NAPI_API(leaveChannel);
-            NAPI_API(setMixLayout);
-            NAPI_API(onEvent);
             NAPI_API(release);
-            //NAPI_API(leaveChannel);
-        //private:
+            NAPI_API(setMixLayout);
+            NAPI_API(on);
             NodeRecordingSdk(Isolate *isolate);
             ~NodeRecordingSdk();
         private:

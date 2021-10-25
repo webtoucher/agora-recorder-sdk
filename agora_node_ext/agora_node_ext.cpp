@@ -8,7 +8,7 @@ using agora::recording::NodeRecordingSdk;
  */
 void InitExt(Local<Object> module)
 {
-	LOG_ENTER;
+    LOG_ENTER;
     NodeRecordingSdk::Init(module);
     LOG_LEAVE;
 }

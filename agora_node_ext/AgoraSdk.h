@@ -70,7 +70,7 @@ class AgoraSdk : virtual public agora::recording::IRecordingEngineEventHandler {
         AgoraSdk();
         virtual ~AgoraSdk();
 
-        virtual bool createChannel(const string &appid, const string &channelKey, const string &name,  agora::linuxsdk::uid_t uid,
+        virtual bool createChannel(const string &appid, const string &token, const string &name,  const string &uid,
                 agora::recording::RecordingConfig &config);
         virtual int setVideoMixLayout();
         virtual bool leaveChannel();

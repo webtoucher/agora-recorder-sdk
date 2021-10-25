@@ -122,7 +122,7 @@ private:
  */
 #define PROPERTY_METHOD_DEFINE(name) NODE_SET_PROTOTYPE_METHOD(tpl, #name, name);
 
-#define EN_PROPERTY_DEFINE() \
+#define END_PROPERTY_DEFINE() \
     constructor.Reset(isolate, tpl->GetFunction());
 
 #define NAPI_AUTO_LENGTH SIZE_MAX

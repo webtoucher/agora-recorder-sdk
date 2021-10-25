@@ -21,10 +21,10 @@ namespace agora {
             BEGIN_PROPERTY_DEFINE(NodeRecordingSdk, createInstance, 2) //NodeRecordingSdk count of member var
             PROPERTY_METHOD_DEFINE(joinChannel)
             PROPERTY_METHOD_DEFINE(leaveChannel)
-            PROPERTY_METHOD_DEFINE(setMixLayout)
-            PROPERTY_METHOD_DEFINE(onEvent)
             PROPERTY_METHOD_DEFINE(release)
-            EN_PROPERTY_DEFINE()
+            PROPERTY_METHOD_DEFINE(setMixLayout)
+            PROPERTY_METHOD_DEFINE(on)
+            END_PROPERTY_DEFINE()
             module->Set(String::NewFromUtf8(isolate, "NodeRecordingSdk"), tpl->GetFunction());
         }
 
@@ -86,37 +86,37 @@ namespace agora {
             do{
                 agora::recording::RecordingConfig config;
 
-                NodeString key, name, chan_info, applitDir, appid, cfgPath;
-                uid_t uid;
+                NodeString appid, token, channel, uid, appliteDir, cfgPath;
                 NodeRecordingSdk *pRecording = NULL;
                 napi_get_native_this(args, pRecording);
                 CHECK_NATIVE_THIS(pRecording);
-                napi_status status = napi_get_value_nodestring_(args[0], key);
-                CHECK_NAPI_STATUS(status);
-                status = napi_get_value_nodestring_(args[1], name);
-                CHECK_NAPI_STATUS(status);
 
-                status = napi_get_value_nodestring_(args[2], applitDir);
-                cout << "appliteDir " << applitDir << endl;
-                CHECK_NAPI_STATUS(status);
+                napi_status status;
 
-                status = napi_get_value_nodestring_(args[3], appid);
-                CHECK_NAPI_STATUS(status);
-                status = NodeUid::getUidFromNodeValue(args[4], uid);
-                CHECK_NAPI_STATUS(status);
-                status = napi_get_value_nodestring_(args[5], cfgPath);
+                status = napi_get_value_nodestring_(args[0], appid);
                 CHECK_NAPI_STATUS(status);
                 string str_appid = (string)appid;
-                string str_name = (string)name;
-                string str_appliteDir = (string)applitDir;
-                string str_cfgPath = (string)cfgPath;
-                string str_key;
 
-                if(key == nullptr) {
-                    str_key = "";
-                } else {
-                    str_key = (string)key;
-                }
+                status = napi_get_value_nodestring_(args[1], token);
+                CHECK_NAPI_STATUS(status);
+                string str_token = (string)token;
+
+                status = napi_get_value_nodestring_(args[2], channel);
+                CHECK_NAPI_STATUS(status);
+                string str_channel = (string)channel;
+
+                status = napi_get_value_nodestring_(args[3], uid);
+                CHECK_NAPI_STATUS(status);
+                string str_uid = (string)uid;
+
+                status = napi_get_value_nodestring_(args[4], appliteDir);
+                cout << "appliteDir " << appliteDir << endl;
+                CHECK_NAPI_STATUS(status);
+                string str_appliteDir = (string)appliteDir;
+
+                status = napi_get_value_nodestring_(args[5], cfgPath);
+                CHECK_NAPI_STATUS(status);
+                string str_cfgPath = (string)cfgPath;
 
                 config.appliteDir = const_cast<char*>(str_appliteDir.c_str());
                 config.cfgFilePath = const_cast<char*>(str_cfgPath.c_str());
@@ -151,7 +151,7 @@ namespace agora {
                 config.audioIndicationInterval = 0;
                 //todo
                 // pRecording->m_agorasdk->updateMixModeSetting(0, 0, true);
-                int result = pRecording->m_agorasdk->createChannel(str_appid, str_key, str_name, uid, config);
+                int result = pRecording->m_agorasdk->createChannel(str_appid, str_token, str_channel, str_uid, config);
                 cout << "pRecording->m_agorasdk->createChannel return result:" << result << endl;
                 napi_set_int_result(args, result);
             } while(false);
@@ -268,7 +268,7 @@ namespace agora {
             LOG_LEAVE;
         }
 
-        NAPI_API_DEFINE(NodeRecordingSdk, onEvent)
+        NAPI_API_DEFINE(NodeRecordingSdk, on)
 
         {
 

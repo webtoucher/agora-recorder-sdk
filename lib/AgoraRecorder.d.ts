@@ -1,6 +1,3 @@
-declare const AgoraRecorder: AgoraRecorder
-export default AgoraRecorder
-
 export declare type AgoraDecryptionMode =
     | 'aes-128-xts'
     | 'aes-256-xts'
@@ -843,14 +840,14 @@ export declare interface AgoraVideoMixingLayout {
      *
      * @default 0
      */
-    canvasWidth: number
+    canvasWidth?: number
 
     /**
      * The height of the canvas (the display window or screen).
      *
      * @default 0
      */
-    canvasHeight: number
+    canvasHeight?: number
 
     /**
      * The background color of the canvas (the display window or screen) in RGB hex value. e.g. "#C0C0C0" in RGB
@@ -867,7 +864,7 @@ export declare interface AgoraVideoMixingLayout {
      *
      * @default 0
      */
-    regionCount: number
+    regionCount?: number
 
     /**
      * The user (communication mode)/host (live broadcast mode) list of `AgoraVideoMixingLayout`.
@@ -876,7 +873,7 @@ export declare interface AgoraVideoMixingLayout {
      *
      * @default null
      */
-    regions?: [AgoraRegion]
+    regions?: AgoraRegion[]
 
     /**
      * User-defined data.
@@ -890,7 +887,7 @@ export declare interface AgoraVideoMixingLayout {
      *
      * @default 0
      */
-    appDataLength: number
+    appDataLength?: number
 
     /**
      * Sets whether or not to show the last frame of a user in the region after the user leaves the channel:
@@ -899,7 +896,7 @@ export declare interface AgoraVideoMixingLayout {
      *
      * @default false
      */
-    keepLastFrame: boolean
+    keepLastFrame?: boolean
 
     /**
      * Sets the number of watermarks that you want to add to the video.
@@ -907,17 +904,17 @@ export declare interface AgoraVideoMixingLayout {
      *
      * @default 0
      */
-    wm_num: number
+    wm_num?: number
 
     /**
      * The configuration of the watermarks. Pointer to an array of WatermarkConfig.
      *
      * @default null
      */
-    wm_configs?: [AgoraWatermarkConfig]
+    wm_configs?: AgoraWatermarkConfig[]
 }
 
-export declare interface AgoraRecorder {
+export declare class AgoraRecorder {
     joinChannel: (
         appid: string,
         token: string,
@@ -950,5 +947,7 @@ export declare interface AgoraRecorder {
     on(eventName: AgoraRecorderEvent.REC_EVENT_RECORDING_STATS, callback: (stats: any) => void): void
     on(eventName: AgoraRecorderEvent.REC_EVENT_LOCAL_USER_REGISTER, callback: (uid: string | number, account: string) => void): void
     on(eventName: AgoraRecorderEvent.REC_EVENT_USER_INFO_UPDATED, callback: (uid: string | number, info: any) => void): void
-    on(eventName: AgoraRecorderEvent, callback: (...args: any[]) => void): void
+    on(eventName: string, callback: (...args: any[]) => void): void
 }
+
+export default AgoraRecorder

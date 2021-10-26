@@ -250,49 +250,49 @@ export declare interface AgoraRegion {
      *
      * @default 0
      */
-    uid: number
+    uid?: number
 
     /**
      * The relative horizontal position of the top-left corner of the region. The value is between 0.0 and 1.0.
      *
      * @default 0.0
      */
-    x: number
+    x?: number
 
     /**
      * The relative vertical position of the top-left corner of the region. The value is between 0.0 and 1.0.
      *
      * @default 0.0
      */
-    y: number
+    y?: number
 
     /**
      * The relative width of the region. The value is between 0.0 and 1.0.
      *
      * @default 0.0
      */
-    width: number
+    width?: number
 
     /**
      * The relative height of the region. The value is between 0.0 and 1.0.
      *
      * @default 0.0
      */
-    height: number
+    height?: number
 
     /**
      * The transparency of the image. The value is between 0.0 (transparent) and 1.0 (opaque).
      *
      * @default 1.0
      */
-    alpha: number
+    alpha?: number
 
     /**
      * Render mode.
      *
      * @default AgoraRenderMode.RENDER_MODE_HIDDEN
      */
-    renderMode: AgoraRenderMode
+    renderMode?: AgoraRenderMode
 }
 
 export declare interface AgoraRecordingConfig {

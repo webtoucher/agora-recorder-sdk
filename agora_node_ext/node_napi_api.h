@@ -114,7 +114,7 @@ private:
  */
 #define BEGIN_PROPERTY_DEFINE(className, constructor, fieldCount) \
     Local<FunctionTemplate> tpl = FunctionTemplate::New(isolate, constructor); \
-    tpl->SetClassName(String::NewFromUtf8(isolate, #className)); \
+    tpl->SetClassName(String::NewFromUtf8(isolate, #className).FromMaybe(Local<String>())); \
     tpl->InstanceTemplate()->SetInternalFieldCount(fieldCount);
 
 /**
@@ -123,7 +123,7 @@ private:
 #define PROPERTY_METHOD_DEFINE(name) NODE_SET_PROTOTYPE_METHOD(tpl, #name, name);
 
 #define END_PROPERTY_DEFINE() \
-    constructor.Reset(isolate, tpl->GetFunction());
+    constructor.Reset(isolate, tpl->GetFunction(Isolate::GetCurrent()->GetCurrentContext()).FromMaybe(Local<Function>()));
 
 #define NAPI_AUTO_LENGTH SIZE_MAX
 

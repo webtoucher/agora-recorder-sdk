@@ -21,7 +21,9 @@ namespace agora {
             Isolate *isolate = Isolate::GetCurrent();\
             HandleScope scope(isolate);\
             NodeEventCallback& cb = *it->second;\
-            cb.callback.Get(isolate)->Call(cb.js_this.Get(isolate), 0, nullptr);\
+            [&]{\
+                return cb.callback.Get(isolate)->Call(isolate->GetCurrentContext(), cb.js_this.Get(isolate), 0, nullptr);\
+            }();\
         }
 
 #define MAKE_JS_CALL_1(ev, type, param) \
@@ -32,7 +34,9 @@ namespace agora {
             Local<Value> argv[1]{ napi_create_##type##_(isolate, param)\
                                 };\
             NodeEventCallback& cb = *it->second;\
-            cb.callback.Get(isolate)->Call(cb.js_this.Get(isolate), 1, argv);\
+            [&]{\
+                return cb.callback.Get(isolate)->Call(isolate->GetCurrentContext(), cb.js_this.Get(isolate), 1, argv);\
+            }();\
         }
 
 #define MAKE_JS_CALL_2(ev, type1, param1, type2, param2) \
@@ -44,7 +48,9 @@ namespace agora {
                                   napi_create_##type2##_(isolate, param2)\
                                 };\
             NodeEventCallback& cb = *it->second;\
-            cb.callback.Get(isolate)->Call(cb.js_this.Get(isolate), 2, argv);\
+            [&]{\
+                return cb.callback.Get(isolate)->Call(isolate->GetCurrentContext(), cb.js_this.Get(isolate), 2, argv);\
+            }();\
         }
 
 #define MAKE_JS_CALL_3(ev, type1, param1, type2, param2, type3, param3) \
@@ -57,7 +63,9 @@ namespace agora {
                                   napi_create_##type3##_(isolate, param3) \
                                 };\
             NodeEventCallback& cb = *it->second;\
-            cb.callback.Get(isolate)->Call(cb.js_this.Get(isolate), 3, argv);\
+            [&]{\
+                return cb.callback.Get(isolate)->Call(isolate->GetCurrentContext(), cb.js_this.Get(isolate), 3, argv);\
+            }();\
         }
 
 #define MAKE_JS_CALL_4(ev, type1, param1, type2, param2, type3, param3, type4, param4) \
@@ -71,7 +79,9 @@ namespace agora {
                                   napi_create_##type4##_(isolate, param4), \
                                 };\
             NodeEventCallback& cb = *it->second;\
-            cb.callback.Get(isolate)->Call(cb.js_this.Get(isolate), 4, argv);\
+            [&]{\
+                return cb.callback.Get(isolate)->Call(isolate->GetCurrentContext(), cb.js_this.Get(isolate), 4, argv);\
+            }();\
         }
 
 #define MAKE_JS_CALL_5(ev, type1, param1, type2, param2, type3, param3, type4, param4, type5, param5) \
@@ -86,7 +96,9 @@ namespace agora {
                                   napi_create_##type5##_(isolate, param5), \
                                 };\
             NodeEventCallback& cb = *it->second;\
-            cb.callback.Get(isolate)->Call(cb.js_this.Get(isolate), 5, argv);\
+            [&]{\
+                return cb.callback.Get(isolate)->Call(isolate->GetCurrentContext(), cb.js_this.Get(isolate), 5, argv);\
+            }();\
         }
 
 
@@ -344,7 +356,13 @@ void AgoraSdk::videoFrameReceivedImpl(unsigned int uid, const agora::linuxsdk::V
 
     struct tm date;
     time_t t = time(NULL);
+
+    #if (defined(_WIN32) || defined(_WIN64))
+    localtime_s(&date, &t);
+    #else
     localtime_r(&t, &date);
+    #endif
+
     char timebuf[128];
     sprintf(timebuf, "%04d%02d%02d%02d%02d%02d", date.tm_year + 1900, date.tm_mon + 1, date.tm_mday, date.tm_hour, date.tm_min, date.tm_sec);
     std::string file_name = m_storage_dir + std::string(uidbuf) + "_" + std::string(timebuf) + suffix;
@@ -415,16 +433,24 @@ void AgoraSdk::onAudioVolumeIndication_node(const agora::linuxsdk::AudioVolumeIn
         Local<v8::Array> arrSpeakers = v8::Array::New(isolate, speakerNumber);
         for (unsigned int i = 0; i < speakerNumber; i++) {
             Local<Object> obj = Object::New(isolate);
-            obj->Set(napi_create_string_(isolate, "uid"), napi_create_uid_(isolate, speakers[i].uid));
-            obj->Set(napi_create_string_(isolate, "volume"), napi_create_uint32_(isolate, speakers[i].volume));
-            arrSpeakers->Set(i, obj);
+            [&]{
+                return obj->Set(isolate->GetCurrentContext(), napi_create_string_(isolate, "uid"), napi_create_uid_(isolate, speakers[i].uid));
+            }();
+            [&]{
+                return obj->Set(isolate->GetCurrentContext(), napi_create_string_(isolate, "volume"), napi_create_uint32_(isolate, speakers[i].volume));
+            }();
+            [&]{
+                return arrSpeakers->Set(isolate->GetCurrentContext(), i, obj);
+            }();
         }
 
         Local<Value> argv[2]{ arrSpeakers,
                             napi_create_uint32_(isolate, speakerNumber)
                             };
         NodeEventCallback& cb = *it->second;
-        cb.callback.Get(isolate)->Call(cb.js_this.Get(isolate), 2, argv);
+        [&]{
+            return cb.callback.Get(isolate)->Call(isolate->GetCurrentContext(), cb.js_this.Get(isolate), 2, argv);
+        }();
     }
 }
 

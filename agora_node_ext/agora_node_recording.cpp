@@ -17,7 +17,9 @@ namespace agora {
         void NodeRecordingSdk::Init(Local<Object> &module)
         {
             Isolate *isolate = module->GetIsolate();
+            #if (!defined(_WIN32) && !defined(_WIN64))
             signal(SIGPIPE, SIG_IGN);
+            #endif
             BEGIN_PROPERTY_DEFINE(NodeRecordingSdk, createInstance, 2) //NodeRecordingSdk count of member var
             PROPERTY_METHOD_DEFINE(joinChannel)
             PROPERTY_METHOD_DEFINE(leaveChannel)
@@ -25,7 +27,9 @@ namespace agora {
             PROPERTY_METHOD_DEFINE(setMixLayout)
             PROPERTY_METHOD_DEFINE(on)
             END_PROPERTY_DEFINE()
-            module->Set(String::NewFromUtf8(isolate, "NodeRecordingSdk"), tpl->GetFunction());
+            [&]{
+                return module->Set(isolate->GetCurrentContext(), String::NewFromUtf8(isolate, "NodeRecordingSdk").FromMaybe(Local<String>()), tpl->GetFunction(isolate->GetCurrentContext()).FromMaybe(Local<Function>()));
+            }();
         }
 
         //The function is used as class constructor in JS layer
@@ -195,7 +199,7 @@ namespace agora {
                 int canvasWidth, canvasHeight;
                 NodeString backgroundColor;
                 Local<Array> regions;
-                Local<Object> layoutData = args[0]->ToObject(args.GetIsolate());
+                Local<Object> layoutData = args[0]->ToObject(args.GetIsolate()->GetCurrentContext()).FromMaybe(Local<Object>());
                 napi_status status = napi_get_value_int32_object_(args.GetIsolate(), layoutData, "canvasWidth", canvasWidth);
                 CHECK_NAPI_STATUS(status);
 
@@ -213,7 +217,7 @@ namespace agora {
                     int zOrder;
                     double alpha, width, height, x, y;
                     uid_t uid;
-                    Local<Value> regionValue = regions->Get(i);
+                    Local<Value> regionValue = regions->Get(args.GetIsolate()->GetCurrentContext(), i).FromMaybe(Local<Value>());
                     if(!regionValue->IsObject()) {
                         cout << "invalid region found: " << i << endl;
                         break;

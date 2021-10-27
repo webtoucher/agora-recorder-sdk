@@ -24,14 +24,14 @@
         './agora_node_ext/agora_node_ext.h',
         './agora_node_ext/agora_node_ext.cpp',
       ],
+      'library_dirs': ['./sdk/libs/'],
+        'link_settings': {
+        'libraries': ['<(module_root_dir)/sdk/libs/librecorder.a']
+      },
       'conditions': [
         [
           'OS=="linux"',
           {
-            'library_dirs': ['./sdk/libs/'],
-            "link_settings": {
-              "libraries": ["<(module_root_dir)/sdk/libs/librecorder.a"]
-            },
             'sources': [],
             'defines!': [],
           }

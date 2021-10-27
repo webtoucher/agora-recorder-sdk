@@ -5,6 +5,8 @@
 namespace agora {
 namespace recording {
 
+typedef linuxsdk::uid_t uid_t;
+
 /**
  The IRecordingEngineEventHandler class enables callbacks to your application.
  */

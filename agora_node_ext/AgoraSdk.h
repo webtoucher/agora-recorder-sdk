@@ -14,6 +14,11 @@
 #include "base/atomic.h"
 #include "opt_parser.h"
 
+#if (defined(_WIN32) || defined(_WIN64)) && !defined(__GNUC__)
+#include <atomic>
+typedef std::atomic<bool> atomic_bool_t;
+#endif
+
 namespace agora {
 
 using std::string;

@@ -24,10 +24,10 @@ using std::string;
 
 //class NodeEventHandler;
 
-//class NodeRecordingSdk is the wrapper for AgoraSdk, and is exposed to nodejs as the native interface.
+//class AgoraRecorder is the wrapper for AgoraSdk, and is exposed to nodejs as the native interface.
 namespace agora {
     namespace recording {
-        class NodeRecordingSdk : public node::ObjectWrap {
+        class AgoraRecorder : public node::ObjectWrap {
         public:
             //Constructor
             static void createInstance(const FunctionCallbackInfo<Value>& args);
@@ -39,8 +39,8 @@ namespace agora {
             NAPI_API(release);
             NAPI_API(setMixLayout);
             NAPI_API(on);
-            NodeRecordingSdk(Isolate *isolate);
-            ~NodeRecordingSdk();
+            AgoraRecorder(Isolate *isolate);
+            ~AgoraRecorder();
         private:
             DECLARE_CLASS;
             AgoraSdk* m_agorasdk;
@@ -58,7 +58,7 @@ namespace agora {
 
         //Use to extract native this pointer from JS object
         #define napi_get_native_this(args, native) \
-            native = ObjectWrap::Unwrap<NodeRecordingSdk>(args.Holder());
+            native = ObjectWrap::Unwrap<AgoraRecorder>(args.Holder());
 
         //Helper MACRO to check whether the extracted native this is valid.
         #define CHECK_NATIVE_THIS(recording) \

@@ -1,7 +1,7 @@
 #include "agora_node_ext.h"
 #include "agora_node_recording.h"
 using v8::Object;
-using agora::recording::NodeRecordingSdk;
+using agora::recording::AgoraRecorder;
 
 /**
  * Initialize NODEJS ADDON
@@ -9,7 +9,7 @@ using agora::recording::NodeRecordingSdk;
 void InitExt(Local<Object> module)
 {
     LOG_ENTER;
-    NodeRecordingSdk::Init(module);
+    AgoraRecorder::Init(module);
     LOG_LEAVE;
 }
 

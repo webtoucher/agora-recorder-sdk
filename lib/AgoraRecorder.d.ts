@@ -951,4 +951,3 @@ export declare class AgoraRecorder {
 }
 
 export default AgoraRecorder
-export declare const agoraBinPath: string

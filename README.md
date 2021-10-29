@@ -9,7 +9,7 @@ Recording library for Agora.io stream service.
 - ARS IP (public IP)
 - 1MB+ bandwidth for each simultaneous recording channel
 - Server access for `qos.agoralab.co`
-- NodeJS 8.9+
+- NodeJS 14+
 
   **Note:** If server access is denied, the Agora SDK may fail to transfer the required data.
 

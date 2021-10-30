@@ -915,38 +915,83 @@ export declare interface AgoraVideoMixingLayout {
 }
 
 export declare class AgoraRecorderSdk {
+    /**
+     * Enables the recording server to join the channel with the user account.
+     *
+     * After the recording server successfully joins the channel, the SDK triggers the
+     * AgoraRecorderEvent.REC_EVENT_LOCAL_USER_REGISTER and AgoraRecorderEvent.REC_EVENT_USER_JOIN events
+     * on the local client.
+     *
+     * @note To ensure smooth communication, use the same parameter type to identify the users in the same channel.
+     * Hence, the parameter type of the recording server's identifier should be the same as that of the other users
+     * joining the channel with the Agora Native/Web SDK.
+     *
+     * @param token The dynamic key for authentication. Set the dynamic key of the recording server the same as that
+     *              of the Native/Web SDK. If the Native/Web SDK uses a token, the recording server must use a token
+     *              and the `token` of the recording server cannot be set as null. For more information,
+     *              see [Use Security Keys](https://docs.agora.io/en/Voice/token?platform=RESTful).
+     * @param channel The name of the channel to be recorded.
+     * @param account The user account of the recording server. The maximum length of this parameter is 255 bytes.
+     *                Supported character scopes are:
+     *                The 26 lowercase English letters: a to z.
+     *                The 26 uppercase English letters: A to Z.
+     *                The 10 numbers: 0 to 9.
+     *                The space.
+     *                "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[", "]", "^",
+     *                "_", " {", "}", "|", "~", ",".
+     * @param binPath Full path for the AgoraCoreService binary file.
+     * @param configPath Full path for configuration json file. File must contains field Recording_Dir - Full path
+     *                   for the records and logs.
+     */
     joinChannel: (
         appid: string,
         token: string,
         channel: string,
-        uid: string,
+        account: string,
         binPath: string,
         configPath: string
     ) => boolean
+
+    /**
+     * Allows the recording server to leave the channel and release the thread resources.
+     */
     leaveChannel: () => boolean
+
+    /**
+     * Destroys the recording engine instance.
+     */
     release: () => void
+
+    /**
+     * Sets the video layout in composite recording mode.
+     *
+     * @note If you record video in composite recording mode, you must call this method to set the video layout.
+     *
+     * @param layout Layout setting.
+     */
     setMixLayout: (layout: AgoraVideoMixingLayout) => void
-    on(eventName: AgoraRecorderEvent.REC_EVENT_JOIN_CHANNEL, callback: (channel: string, uid: string | number) => void): void
+
+    on(eventName: AgoraRecorderEvent.REC_EVENT_JOIN_CHANNEL, callback: (channel: string, uid: number) => void): void
     on(eventName: AgoraRecorderEvent.REC_EVENT_LEAVE_CHANNEL, callback: () => void): void
     on(eventName: AgoraRecorderEvent.REC_EVENT_ERROR, callback: (err: number, statCode: number) => void): void
-    on(eventName: AgoraRecorderEvent.REC_EVENT_USER_JOIN, callback: (uid: string | number) => void): void
-    on(eventName: AgoraRecorderEvent.REC_EVENT_USER_LEAVE, callback: (uid: string | number) => void): void
-    on(eventName: AgoraRecorderEvent.REC_EVENT_ACTIVE_SPEAKER, callback: (uid: string | number) => void): void
+    on(eventName: AgoraRecorderEvent.REC_EVENT_USER_JOIN, callback: (uid: number) => void): void
+    on(eventName: AgoraRecorderEvent.REC_EVENT_USER_LEAVE, callback: (uid: number) => void): void
+    on(eventName: AgoraRecorderEvent.REC_EVENT_ACTIVE_SPEAKER, callback: (uid: number) => void): void
     on(eventName: AgoraRecorderEvent.REC_EVENT_CONN_LOST, callback: () => void): void
     on(eventName: AgoraRecorderEvent.REC_EVENT_CONN_INTER, callback: () => void): void
     on(eventName: AgoraRecorderEvent.REC_EVENT_STREAM_CHANGED, callback: (receivingAudio: boolean, receivingVideo: boolean) => void): void
-    on(eventName: AgoraRecorderEvent.REC_EVENT_FIRST_VIDEO_FRAME, callback: (uid: string | number, width: number, height: number, elapsed: number) => void): void
-    on(eventName: AgoraRecorderEvent.REC_EVENT_FIRST_AUDIO_FRAME, callback: (uid: string | number, elapsed: number) => void): void
+    on(eventName: AgoraRecorderEvent.REC_EVENT_FIRST_VIDEO_FRAME, callback: (uid: number, width: number, height: number, elapsed: number) => void): void
+    on(eventName: AgoraRecorderEvent.REC_EVENT_FIRST_AUDIO_FRAME, callback: (uid: number, elapsed: number) => void): void
     on(eventName: AgoraRecorderEvent.RTC_EVENT_AUDIO_VOLUME_INDICATION, callback: (speakers: string, speakerNum: number) => void): void
-    on(eventName: AgoraRecorderEvent.REC_EVENT_REMOTE_VIDEO_STREAM_STATE_CHANGED, callback: (uid: string | number, state: number, reason: number) => void): void
-    on(eventName: AgoraRecorderEvent.REC_EVENT_REMOTE_AUDIO_STREAM_STATE_CHANGED, callback: (uid: string | number, state: number, reason: number) => void): void
-    on(eventName: AgoraRecorderEvent.REC_EVENT_REJOIN_SUCCESS, callback: (channel: string, uid: string | number) => void): void
+    on(eventName: AgoraRecorderEvent.REC_EVENT_REMOTE_VIDEO_STREAM_STATE_CHANGED, callback: (uid: number, state: number, reason: number) => void): void
+    on(eventName: AgoraRecorderEvent.REC_EVENT_REMOTE_AUDIO_STREAM_STATE_CHANGED, callback: (uid: number, state: number, reason: number) => void): void
+    on(eventName: AgoraRecorderEvent.REC_EVENT_REJOIN_SUCCESS, callback: (channel: string, uid: number) => void): void
     on(eventName: AgoraRecorderEvent.REC_EVENT_CONN_STATE_CHANGED, callback: (state: number, reason: number) => void): void
-    on(eventName: AgoraRecorderEvent.REC_EVENT_REMOTE_VIDEO_STATS, callback: (uid: string | number, stats: any) => void): void
-    on(eventName: AgoraRecorderEvent.REC_EVENT_REMOTE_AUDIO_STATS, callback: (uid: string | number, stats: any) => void): void
+    on(eventName: AgoraRecorderEvent.REC_EVENT_REMOTE_VIDEO_STATS, callback: (uid: number, stats: any) => void): void
+    on(eventName: AgoraRecorderEvent.REC_EVENT_REMOTE_AUDIO_STATS, callback: (uid: number, stats: any) => void): void
     on(eventName: AgoraRecorderEvent.REC_EVENT_RECORDING_STATS, callback: (stats: any) => void): void
-    on(eventName: AgoraRecorderEvent.REC_EVENT_LOCAL_USER_REGISTER, callback: (uid: string | number, account: string) => void): void
-    on(eventName: AgoraRecorderEvent.REC_EVENT_USER_INFO_UPDATED, callback: (uid: string | number, info: any) => void): void
+    on(eventName: AgoraRecorderEvent.REC_EVENT_LOCAL_USER_REGISTER, callback: (uid: number, account: string) => void): void
+    on(eventName: AgoraRecorderEvent.REC_EVENT_USER_INFO_UPDATED, callback: (uid: number, info: any) => void): void
     on(eventName: string, callback: (...args: any[]) => void): void
 }
 

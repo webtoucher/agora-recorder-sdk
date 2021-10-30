@@ -17,6 +17,9 @@ Recording library for Agora.io stream service.
 ### Background Knowledge
 This project presumes you have basic ideas of how Agora Recording SDK works.
 
+### Using
+We strongly recommend using it via [Agora recording tool](https://docs.agora.io/en/).
+
 ## Resources
 - See full API documentation in the [Document Center](https://docs.agora.io/en/)
 

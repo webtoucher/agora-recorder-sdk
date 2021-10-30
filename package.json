@@ -1,11 +1,11 @@
 {
-  "name": "agora-recorder",
-  "version": "1.0.12",
+  "name": "agora-recorder-sdk",
+  "version": "1.0.13",
   "description": "Recording library for Agora.io stream service",
-  "repository": "https://github.com/webtoucher/agora-recorder",
+  "repository": "https://github.com/webtoucher/agora-recorder-sdk",
   "type": "module",
-  "main": "./lib/AgoraRecorder.js",
-  "types": "./lib/AgoraRecorder.d.ts",
+  "main": "./lib/AgoraRecorderSdk.js",
+  "types": "./lib/AgoraRecorderSdk.d.ts",
   "bin": {
     "AgoraCoreService": "sdk/bin/AgoraCoreService"
   },

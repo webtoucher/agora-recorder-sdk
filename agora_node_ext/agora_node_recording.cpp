@@ -12,15 +12,15 @@ using std::string;
 
 namespace agora {
     namespace recording {
-        DEFINE_CLASS(AgoraRecorder);
+        DEFINE_CLASS(AgoraRecorderSdk);
 
-        void AgoraRecorder::Init(Local<Object> &module)
+        void AgoraRecorderSdk::Init(Local<Object> &module)
         {
             Isolate *isolate = module->GetIsolate();
             #if (!defined(_WIN32) && !defined(_WIN64))
             signal(SIGPIPE, SIG_IGN);
             #endif
-            BEGIN_PROPERTY_DEFINE(AgoraRecorder, createInstance, 2) //AgoraRecorder count of member var
+            BEGIN_PROPERTY_DEFINE(AgoraRecorderSdk, createInstance, 2) //AgoraRecorderSdk count of member var
             PROPERTY_METHOD_DEFINE(joinChannel)
             PROPERTY_METHOD_DEFINE(leaveChannel)
             PROPERTY_METHOD_DEFINE(release)
@@ -28,20 +28,20 @@ namespace agora {
             PROPERTY_METHOD_DEFINE(on)
             END_PROPERTY_DEFINE()
             [&]{
-                return module->Set(isolate->GetCurrentContext(), String::NewFromUtf8(isolate, "AgoraRecorder").FromMaybe(Local<String>()), tpl->GetFunction(isolate->GetCurrentContext()).FromMaybe(Local<Function>()));
+                return module->Set(isolate->GetCurrentContext(), String::NewFromUtf8(isolate, "AgoraRecorderSdk").FromMaybe(Local<String>()), tpl->GetFunction(isolate->GetCurrentContext()).FromMaybe(Local<Function>()));
             }();
         }
 
         //The function is used as class constructor in JS layer
 
-        void AgoraRecorder::createInstance(const FunctionCallbackInfo<Value> &args)
+        void AgoraRecorderSdk::createInstance(const FunctionCallbackInfo<Value> &args)
         {
             LOG_ENTER;
             Isolate *isolate = args.GetIsolate();
             //Called from new
             if (args.IsConstructCall())
             {
-                AgoraRecorder *recording = new AgoraRecorder(isolate);
+                AgoraRecorderSdk *recording = new AgoraRecorderSdk(isolate);
                 recording->Wrap(args.This());
                 args.GetReturnValue().Set(args.This());
             }
@@ -54,7 +54,7 @@ namespace agora {
             }
             LOG_LEAVE;
         }
-        AgoraRecorder::AgoraRecorder(Isolate *isolate)
+        AgoraRecorderSdk::AgoraRecorderSdk(Isolate *isolate)
             : m_isolate(isolate)
         {
             LOG_ENTER;
@@ -83,7 +83,7 @@ namespace agora {
             LOG_LEAVE;
         }
 
-        NAPI_API_DEFINE(AgoraRecorder, joinChannel)
+        NAPI_API_DEFINE(AgoraRecorderSdk, joinChannel)
         {
             LOG_ENTER;
             cout << "joinChannel..." << endl;
@@ -92,7 +92,7 @@ namespace agora {
                 agora::recording::RecordingConfig config;
 
                 NodeString appid, token, channel, uid, appliteDir, cfgPath;
-                AgoraRecorder *pRecording = NULL;
+                AgoraRecorderSdk *pRecording = NULL;
                 napi_get_native_this(args, pRecording);
                 CHECK_NATIVE_THIS(pRecording);
 
@@ -163,13 +163,13 @@ namespace agora {
             LOG_LEAVE;
         }
 
-        NAPI_API_DEFINE(AgoraRecorder, leaveChannel)
+        NAPI_API_DEFINE(AgoraRecorderSdk, leaveChannel)
         {
             LOG_ENTER;
             cout << "leaveChannel..." << endl;
             do
             {
-                AgoraRecorder *pRecording = NULL;
+                AgoraRecorderSdk *pRecording = NULL;
                 napi_get_native_this(args, pRecording);
                 CHECK_NATIVE_THIS(pRecording);
                 /*std::shared_ptr<agora::rtc::NodeVideoStreamChannel> chan;
@@ -187,13 +187,13 @@ namespace agora {
             LOG_LEAVE;
         }
 
-        NAPI_API_DEFINE(AgoraRecorder, setMixLayout)
+        NAPI_API_DEFINE(AgoraRecorderSdk, setMixLayout)
         {
             LOG_ENTER;
             cout << "setting mix layout..." << endl;
             do
             {
-                AgoraRecorder *pRecording = NULL;
+                AgoraRecorderSdk *pRecording = NULL;
                 napi_get_native_this(args, pRecording);
                 CHECK_NATIVE_THIS(pRecording);
 
@@ -273,7 +273,7 @@ namespace agora {
             LOG_LEAVE;
         }
 
-        NAPI_API_DEFINE(AgoraRecorder, on)
+        NAPI_API_DEFINE(AgoraRecorderSdk, on)
 
         {
 
@@ -281,7 +281,7 @@ namespace agora {
 
             do
             {
-                AgoraRecorder *pEngine = nullptr;
+                AgoraRecorderSdk *pEngine = nullptr;
 
                 napi_status status = napi_ok;
 
@@ -330,11 +330,11 @@ namespace agora {
             //LOG_LEAVE;
         }
 
-        NAPI_API_DEFINE(AgoraRecorder, release)
+        NAPI_API_DEFINE(AgoraRecorderSdk, release)
         {
             do
             {
-                AgoraRecorder *pEngine = nullptr;
+                AgoraRecorderSdk *pEngine = nullptr;
                 napi_status status = napi_ok;
                 CHECK_NAPI_STATUS(status);
                 napi_get_native_this(args, pEngine);
@@ -344,7 +344,7 @@ namespace agora {
             } while (false);
         }
 
-        AgoraRecorder::~AgoraRecorder() {
+        AgoraRecorderSdk::~AgoraRecorderSdk() {
             if(m_agorasdk) {
                 m_agorasdk->release();
                 m_agorasdk = NULL;

@@ -914,7 +914,7 @@ export declare interface AgoraVideoMixingLayout {
     wm_configs?: AgoraWatermarkConfig[]
 }
 
-export declare class AgoraRecorder {
+export declare class AgoraRecorderSdk {
     joinChannel: (
         appid: string,
         token: string,
@@ -924,8 +924,8 @@ export declare class AgoraRecorder {
         configPath: string
     ) => boolean
     leaveChannel: () => boolean
-    release: () => boolean
-    setMixLayout: (layout: AgoraVideoMixingLayout) => number
+    release: () => void
+    setMixLayout: (layout: AgoraVideoMixingLayout) => void
     on(eventName: AgoraRecorderEvent.REC_EVENT_JOIN_CHANNEL, callback: (channel: string, uid: string | number) => void): void
     on(eventName: AgoraRecorderEvent.REC_EVENT_LEAVE_CHANNEL, callback: () => void): void
     on(eventName: AgoraRecorderEvent.REC_EVENT_ERROR, callback: (err: number, statCode: number) => void): void
@@ -950,4 +950,4 @@ export declare class AgoraRecorder {
     on(eventName: string, callback: (...args: any[]) => void): void
 }
 
-export default AgoraRecorder
+export default AgoraRecorderSdk

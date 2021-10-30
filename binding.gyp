@@ -1,7 +1,7 @@
 {
   'targets': [
     {
-      'target_name': 'AgoraRecorder',
+      'target_name': 'AgoraRecorderSdk',
       'include_dirs': [
         './sdk/include',
         './sdk/include/base'

@@ -926,10 +926,11 @@ export declare class AgoraRecorderSdk {
      * Hence, the parameter type of the recording server's identifier should be the same as that of the other users
      * joining the channel with the Agora Native/Web SDK.
      *
+     * @param appId Agora application ID. It can be found on the [project settings page](https://console.agora.io/projects).
      * @param token The dynamic key for authentication. Set the dynamic key of the recording server the same as that
      *              of the Native/Web SDK. If the Native/Web SDK uses a token, the recording server must use a token
      *              and the `token` of the recording server cannot be set as null. For more information,
-     *              see [Use Security Keys](https://docs.agora.io/en/Voice/token?platform=RESTful).
+     *              see [Set up Authentication](https://docs.agora.io/en/Recording/token?platform=Linux).
      * @param channel The name of the channel to be recorded.
      * @param account The user account of the recording server. The maximum length of this parameter is 255 bytes.
      *                Supported character scopes are:
@@ -944,7 +945,7 @@ export declare class AgoraRecorderSdk {
      *                   for the records and logs.
      */
     joinChannel: (
-        appid: string,
+        appId: string,
         token: string,
         channel: string,
         account: string,

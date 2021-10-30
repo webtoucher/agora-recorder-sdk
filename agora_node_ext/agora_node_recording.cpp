@@ -91,16 +91,16 @@ namespace agora {
             do{
                 agora::recording::RecordingConfig config;
 
-                NodeString appid, token, channel, uid, appliteDir, cfgPath;
+                NodeString appId, token, channel, uid, appliteDir, cfgPath;
                 AgoraRecorderSdk *pRecording = NULL;
                 napi_get_native_this(args, pRecording);
                 CHECK_NATIVE_THIS(pRecording);
 
                 napi_status status;
 
-                status = napi_get_value_nodestring_(args[0], appid);
+                status = napi_get_value_nodestring_(args[0], appId);
                 CHECK_NAPI_STATUS(status);
-                string str_appid = (string)appid;
+                string str_appId = (string)appId;
 
                 status = napi_get_value_nodestring_(args[1], token);
                 CHECK_NAPI_STATUS(status);
@@ -156,7 +156,7 @@ namespace agora {
                 config.audioIndicationInterval = 0;
                 //todo
                 // pRecording->m_agorasdk->updateMixModeSetting(0, 0, true);
-                int result = pRecording->m_agorasdk->createChannel(str_appid, str_token, str_channel, str_uid, config);
+                int result = pRecording->m_agorasdk->createChannel(str_appId, str_token, str_channel, str_uid, config);
                 cout << "pRecording->m_agorasdk->createChannel return result:" << result << endl;
                 napi_set_int_result(args, result);
             } while(false);

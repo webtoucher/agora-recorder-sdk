@@ -932,14 +932,14 @@ export declare class AgoraRecorderSdk {
      *              and the `token` of the recording server cannot be set as null. For more information,
      *              see [Set up Authentication](https://docs.agora.io/en/Recording/token?platform=Linux).
      * @param channel The name of the channel to be recorded.
-     * @param account The user account of the recording server. The maximum length of this parameter is 255 bytes.
-     *                Supported character scopes are:
-     *                The 26 lowercase English letters: a to z.
-     *                The 26 uppercase English letters: A to Z.
-     *                The 10 numbers: 0 to 9.
-     *                The space.
-     *                "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[", "]", "^",
-     *                "_", " {", "}", "|", "~", ",".
+     * @param userAccount The user account of the recording server. The maximum length of this parameter is 255 bytes.
+     *                    Supported character scopes are:
+     *                    The 26 lowercase English letters: a to z.
+     *                    The 26 uppercase English letters: A to Z.
+     *                    The 10 numbers: 0 to 9.
+     *                    The space.
+     *                    "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[", "]", "^",
+     *                    "_", " {", "}", "|", "~", ",".
      * @param binPath Full path for the AgoraCoreService binary file.
      * @param configPath Full path for configuration json file. File must contains field Recording_Dir - Full path
      *                   for the records and logs.
@@ -948,7 +948,7 @@ export declare class AgoraRecorderSdk {
         appId: string,
         token: string,
         channel: string,
-        account: string,
+        userAccount: string,
         binPath: string,
         configPath: string
     ) => boolean
@@ -991,8 +991,8 @@ export declare class AgoraRecorderSdk {
     on(eventName: AgoraRecorderEvent.REC_EVENT_REMOTE_VIDEO_STATS, callback: (uid: number, stats: any) => void): void
     on(eventName: AgoraRecorderEvent.REC_EVENT_REMOTE_AUDIO_STATS, callback: (uid: number, stats: any) => void): void
     on(eventName: AgoraRecorderEvent.REC_EVENT_RECORDING_STATS, callback: (stats: any) => void): void
-    on(eventName: AgoraRecorderEvent.REC_EVENT_LOCAL_USER_REGISTER, callback: (uid: number, account: string) => void): void
-    on(eventName: AgoraRecorderEvent.REC_EVENT_USER_INFO_UPDATED, callback: (uid: number, info: any) => void): void
+    on(eventName: AgoraRecorderEvent.REC_EVENT_LOCAL_USER_REGISTER, callback: (uid: number, userAccount: string) => void): void
+    on(eventName: AgoraRecorderEvent.REC_EVENT_USER_INFO_UPDATED, callback: (uid: number, info: { uid: number, userAccount: string }) => void): void
     on(eventName: string, callback: (...args: any[]) => void): void
 }
 

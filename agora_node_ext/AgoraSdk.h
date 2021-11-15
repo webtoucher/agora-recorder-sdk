@@ -75,6 +75,7 @@ class AgoraSdk : virtual public agora::recording::IRecordingEngineEventHandler {
         AgoraSdk();
         virtual ~AgoraSdk();
 
+        virtual bool setLogLevel(agora::linuxsdk::agora_log_level level);
         virtual bool createChannel(const string &appid, const string &token, const string &name,  const string &uid,
                 agora::recording::RecordingConfig &config);
         virtual int setVideoMixLayout();
@@ -164,6 +165,7 @@ class AgoraSdk : virtual public agora::recording::IRecordingEngineEventHandler {
     protected:
         atomic_bool_t m_stopped;
         std::vector<agora::linuxsdk::uid_t> m_peers;
+        agora::linuxsdk::agora_log_level m_log_level;
         std::string m_logdir;
         std::string m_storage_dir;
         MixModeSettings m_mixRes;

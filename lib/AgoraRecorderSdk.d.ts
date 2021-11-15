@@ -9,6 +9,38 @@ export declare type AgoraDecryptionMode =
     | 'aes-256-gcm2'
     | 'none'
 
+export declare const enum AgoraLogLevel {
+    /**
+     * 1: Fatal.
+     */
+    AGORA_LOG_LEVEL_FATAL = 1,
+
+    /**
+     * 2: Error.
+     */
+    AGORA_LOG_LEVEL_ERROR = 2,
+
+    /**
+     * 3: Warning.
+     */
+    AGORA_LOG_LEVEL_WARN = 3,
+
+    /**
+     * 4: Notice.
+     */
+    AGORA_LOG_LEVEL_NOTICE = 4,
+
+    /**
+     * 5: (Default) Info.
+     */
+    AGORA_LOG_LEVEL_INFO = 5,
+
+    /**
+     * 6: Debug.
+     */
+    AGORA_LOG_LEVEL_DEBUG = 6,
+}
+
 export declare const enum AgoraRecorderEvent {
     REC_EVENT_JOIN_CHANNEL = 'joinchannel',
     REC_EVENT_LEAVE_CHANNEL = 'leavechannel',
@@ -952,6 +984,12 @@ export declare class AgoraRecorderSdk {
         binPath: string,
         configPath: string
     ) => boolean
+
+    /**
+     * Sets the log level.
+     * Only log levels preceding the selected level are generated. The default value of the log level is 5.
+     */
+    setLogLevel: (level: AgoraLogLevel) => boolean
 
     /**
      * Allows the recording server to leave the channel and release the thread resources.

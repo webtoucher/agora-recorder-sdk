@@ -138,6 +138,7 @@ namespace agora {
 
 AgoraSdk::AgoraSdk(): IRecordingEngineEventHandler() {
   m_engine = NULL;
+  m_log_level = agora::linuxsdk::agora_log_level::AGORA_LOG_LEVEL_INFO;
   m_stopped.store(false);
   m_storage_dir = "./";
 }
@@ -162,12 +163,24 @@ bool AgoraSdk::release() {
   return true;
 }
 
+bool AgoraSdk::setLogLevel(agora::linuxsdk::agora_log_level level) {
+    m_log_level = level;
+    if (m_engine) {
+        m_engine->setLogLevel(level);
+    }
+
+    return true;
+}
+
 bool AgoraSdk::createChannel(const string &appid, const string &token, const string &name, const string &uid,
     agora::recording::RecordingConfig &config)
 {
     if ((m_engine = agora::recording::IRecordingEngine::createAgoraRecordingEngine(appid.c_str(), this)) == NULL)
         return false;
 
+    if (m_log_level != agora::linuxsdk::agora_log_level::AGORA_LOG_LEVEL_INFO) {
+        m_engine->setLogLevel(m_log_level);
+    }
     if (linuxsdk::ERR_OK != m_engine->joinChannelWithUserAccount(token.c_str(), name.c_str(), uid.c_str(), config))
         return false;
 

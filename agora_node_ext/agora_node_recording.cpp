@@ -25,6 +25,7 @@ namespace agora {
             PROPERTY_METHOD_DEFINE(leaveChannel)
             PROPERTY_METHOD_DEFINE(release)
             PROPERTY_METHOD_DEFINE(setMixLayout)
+            PROPERTY_METHOD_DEFINE(setLogLevel)
             PROPERTY_METHOD_DEFINE(on)
             END_PROPERTY_DEFINE()
             [&]{
@@ -80,6 +81,25 @@ namespace agora {
                 {"160x120", "120"},
                 {"120x120", "100"}
             };
+            LOG_LEAVE;
+        }
+
+        NAPI_API_DEFINE(AgoraRecorderSdk, setLogLevel)
+        {
+            LOG_ENTER;
+            AgoraRecorderSdk *pRecording = NULL;
+            napi_get_native_this(args, pRecording);
+            CHECK_NATIVE_THIS(pRecording);
+
+            int32_t level;
+
+            napi_status status = napi_get_value_int32_(args[0], level);
+            CHECK_NAPI_STATUS(status);
+            agora::linuxsdk::agora_log_level level_val = static_cast<agora::linuxsdk::agora_log_level>(level);
+
+            int result = pRecording->m_agorasdk->setLogLevel(level_val);
+            cout << "setLogLevel..." << level_val << result << endl;
+            napi_set_int_result(args, result);
             LOG_LEAVE;
         }
 

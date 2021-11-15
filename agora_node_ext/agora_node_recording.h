@@ -38,6 +38,7 @@ namespace agora {
             NAPI_API(leaveChannel);
             NAPI_API(release);
             NAPI_API(setMixLayout);
+            NAPI_API(setLogLevel);
             NAPI_API(on);
             AgoraRecorderSdk(Isolate *isolate);
             ~AgoraRecorderSdk();

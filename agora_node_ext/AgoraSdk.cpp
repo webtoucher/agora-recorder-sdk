@@ -227,7 +227,6 @@ int AgoraSdk::setVideoMixLayout()
     // size_t max_peers = pConfig->channelProfile == linuxsdk::CHANNEL_PROFILE_COMMUNICATION ? 7:17;
     if(m_layout.regionCount == 0) return 0;
 
-    cout << "color: " << m_layout.backgroundColor << endl;
     return setVideoMixingLayout(m_layout);
 }
 
@@ -257,7 +256,6 @@ void AgoraSdk::onWarningImpl(int warn) {
 }
 
 void AgoraSdk::onJoinChannelSuccessImpl(const char * channelId, agora::linuxsdk::uid_t uid) {
-    cout << "join channel Id: " << channelId << ", with uid: " << uid << endl;
     string channelName = channelId;
     agora::recording::node_async_call::async_call([this, channelName, uid]() {
         MAKE_JS_CALL_2(REC_EVENT_JOIN_CHANNEL, string, channelName.c_str(), uid, uid);
@@ -265,14 +263,12 @@ void AgoraSdk::onJoinChannelSuccessImpl(const char * channelId, agora::linuxsdk:
 }
 
 void AgoraSdk::onLeaveChannelImpl(agora::linuxsdk::LEAVE_PATH_CODE code) {
-    cout << "leave channel with code:" << code << endl;
     agora::recording::node_async_call::async_call([this]() {
         MAKE_JS_CALL_0(REC_EVENT_LEAVE_CHANNEL);
     });
 }
 
 void AgoraSdk::onUserJoinedImpl(unsigned uid, agora::linuxsdk::UserJoinInfos &infos) {
-    cout << "User " << uid << " joined, RecordingDir:" << (infos.storageDir? infos.storageDir:"NULL") <<endl;
     if(infos.storageDir)
     {
         m_storage_dir = std::string(infos.storageDir);
@@ -291,7 +287,6 @@ void AgoraSdk::onUserJoinedImpl(unsigned uid, agora::linuxsdk::UserJoinInfos &in
 
 
 void AgoraSdk::onUserOfflineImpl(unsigned uid, agora::linuxsdk::USER_OFFLINE_REASON_TYPE reason) {
-    cout << "User " << uid << " offline, reason: " << reason << endl;
     m_peers.erase(std::remove(m_peers.begin(), m_peers.end(), uid), m_peers.end());
 
     //When the user is offline, we can re-layout the canvas
@@ -322,13 +317,8 @@ void AgoraSdk::audioFrameReceivedImpl(unsigned int uid, const agora::linuxsdk::A
     agora::linuxsdk::AudioPcmFrame *f = pframe->frame.pcm;
     data = f->pcmBuf_;
     size = f->pcmBufSize_;
-
-    cout << "User " << uid << ", received a raw PCM frame ,channels:" << f->channels_ <<endl;
-
   } else if (pframe->type == agora::linuxsdk::AUDIO_FRAME_AAC) {
     info_name += ".aac";
-
-    cout << "User " << uid << ", received an AAC frame" << endl;
 
     agora::linuxsdk::AudioAacFrame *f = pframe->frame.aac;
     data = f->aacBuf_;
@@ -337,10 +327,6 @@ void AgoraSdk::audioFrameReceivedImpl(unsigned int uid, const agora::linuxsdk::A
 
   FILE *fp = fopen(info_name.c_str(), "a+b");
   if(fp == NULL) {
-      cout << "failed to open: " << info_name;
-      cout<< " ";
-      cout << "errno: " << errno;
-      cout<< endl;
       return;
   }
 
@@ -355,17 +341,9 @@ void AgoraSdk::videoFrameReceivedImpl(unsigned int uid, const agora::linuxsdk::V
   if (pframe->type == agora::linuxsdk::VIDEO_FRAME_RAW_YUV) {
     agora::linuxsdk::VideoYuvFrame *f = pframe->frame.yuv;
     suffix=".yuv";
-
-    cout << "User " << uid << ", received a yuv frame, width: "
-        << f->width_ << ", height: " << f->height_ ;
-    cout<<",ystride:"<<f->ystride_<< ",ustride:"<<f->ustride_<<",vstride:"<<f->vstride_;
-    cout<< endl;
   } else if(pframe->type == agora::linuxsdk::VIDEO_FRAME_JPG) {
     suffix=".jpg";
     agora::linuxsdk::VideoJpgFrame *f = pframe->frame.jpg;
-
-    cout << "User " << uid << ", received an jpg frame, timestamp: "
-    << f->frame_ms_ << endl;
 
     struct tm date;
     time_t t = time(NULL);
@@ -381,10 +359,6 @@ void AgoraSdk::videoFrameReceivedImpl(unsigned int uid, const agora::linuxsdk::V
     std::string file_name = m_storage_dir + std::string(uidbuf) + "_" + std::string(timebuf) + suffix;
     FILE *fp = fopen(file_name.c_str(), "w");
     if(fp == NULL) {
-        cout << "failed to open: " << file_name;
-        cout<< " ";
-        cout << "errno: " << errno;
-        cout<< endl;
         return;
     }
 
@@ -394,18 +368,11 @@ void AgoraSdk::videoFrameReceivedImpl(unsigned int uid, const agora::linuxsdk::V
   } else {
     suffix=".h264";
     agora::linuxsdk::VideoH264Frame *f = pframe->frame.h264;
-
-    cout << "User " << uid << ", received an h264 frame, timestamp: "
-        << f->frame_ms_ << ", frame no: " << f->frame_num_ << endl;
   }
 
   std::string info_name = m_storage_dir + std::string(uidbuf) /*+ timestamp_per_join_ */+ std::string(suffix);
   FILE *fp = fopen(info_name.c_str(), "a+b");
   if(fp == NULL) {
-        cout << "failed to open: " << info_name;
-        cout<< " ";
-        cout << "errno: " << errno;
-        cout<< endl;
         return;
   }
 

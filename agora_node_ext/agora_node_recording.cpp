@@ -98,7 +98,6 @@ namespace agora {
             agora::linuxsdk::agora_log_level level_val = static_cast<agora::linuxsdk::agora_log_level>(level);
 
             int result = pRecording->m_agorasdk->setLogLevel(level_val);
-            cout << "setLogLevel..." << level_val << result << endl;
             napi_set_int_result(args, result);
             LOG_LEAVE;
         }
@@ -106,7 +105,6 @@ namespace agora {
         NAPI_API_DEFINE(AgoraRecorderSdk, joinChannel)
         {
             LOG_ENTER;
-            cout << "joinChannel..." << endl;
 
             do{
                 agora::recording::RecordingConfig config;
@@ -135,7 +133,6 @@ namespace agora {
                 string str_uid = (string)uid;
 
                 status = napi_get_value_nodestring_(args[4], appliteDir);
-                cout << "appliteDir " << appliteDir << endl;
                 CHECK_NAPI_STATUS(status);
                 string str_appliteDir = (string)appliteDir;
 
@@ -162,7 +159,6 @@ namespace agora {
                 map<string, string>::iterator it = pRecording->m_resolutionMap.find(resolutionKey);
                 if (it == pRecording->m_resolutionMap.end()) {
                     // no values found, throw error
-                    cout << "unsupported resolution" << endl;
                     int err = 2000, stat_code = 4;
                     pRecording->m_agorasdk->emitError(err, stat_code);
                     break;
@@ -177,7 +173,6 @@ namespace agora {
                 //todo
                 // pRecording->m_agorasdk->updateMixModeSetting(0, 0, true);
                 int result = pRecording->m_agorasdk->createChannel(str_appId, str_token, str_channel, str_uid, config);
-                cout << "pRecording->m_agorasdk->createChannel return result:" << result << endl;
                 napi_set_int_result(args, result);
             } while(false);
             LOG_LEAVE;
@@ -186,7 +181,6 @@ namespace agora {
         NAPI_API_DEFINE(AgoraRecorderSdk, leaveChannel)
         {
             LOG_ENTER;
-            cout << "leaveChannel..." << endl;
             do
             {
                 AgoraRecorderSdk *pRecording = NULL;
@@ -210,7 +204,6 @@ namespace agora {
         NAPI_API_DEFINE(AgoraRecorderSdk, setMixLayout)
         {
             LOG_ENTER;
-            cout << "setting mix layout..." << endl;
             do
             {
                 AgoraRecorderSdk *pRecording = NULL;
@@ -240,7 +233,6 @@ namespace agora {
                     uid_t uid;
                     Local<Value> regionValue = regions->Get(args.GetIsolate()->GetCurrentContext(), i).FromMaybe(Local<Value>());
                     if(!regionValue->IsObject()) {
-                        cout << "invalid region found: " << i << endl;
                         break;
                     }
                     Local<Object> region = Local<Object>::Cast(regionValue);
